@@ -1,0 +1,670 @@
+openapi: 3.0.1
+info:
+  title: IRIDA API
+  description: ''
+  termsOfService: 'http://swagger.io/terms/'
+  contact:
+    email: contact@irida.ca
+  license:
+    name: Apache 2.0
+    url: 'http://www.apache.org/licenses/LICENSE-2.0.html'
+  version: 1.0.0
+externalDocs:
+  description: Find out more about Swagger
+  url: 'http://swagger.io'
+servers:
+  - url: 'http://localhost:8080/api'
+    description: Local Development
+tags:
+  - name: Users
+    description: Details about users
+    externalDocs:
+      description: 'Docs'
+      url: 'https://irida.corefacility.ca/documentation/developer/rest/#users'
+  - name: Projects
+    description: Details about projects
+    externalDocs:
+      description: 'Docs'
+      url: 'https://irida.corefacility.ca/documentation/developer/rest/#projects'
+  - name: Sequencing Runs
+    description: Details about Sequencing Runs
+    externalDocs:
+      description: 'Docs'
+      url: 'https://irida.corefacility.ca/documentation/developer/rest/#sequencing-runs'
+  - name: Samples
+    description: Details about Samples
+    externalDocs:
+      description: 'Docs'
+      url: 'https://irida.corefacility.ca/documentation/developer/rest/#samples'
+  - name: Analysis Submissions
+    description: Details about Analysis Submissions
+    externalDocs:
+      description: 'Docs'
+      url: 'https://irida.corefacility.ca/documentation/developer/rest/#analysis-submissions'
+paths:
+  /projects:
+    get:
+      tags:
+        - Projects
+      operationId: getProjects
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/ProjectResourceCollectionResource'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProjectResourceCollectionResource'
+  /projects/{id}:
+    get:
+      tags:
+        - Projects
+      summary: Get project by id
+      description: ''
+      operationId: getProjectById
+      parameters:
+        - name: id
+          in: path
+          description: ''
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/ProjectResource'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProjectResource'
+        '400':
+          description: Invalid ID supplied
+          content: {}
+        '404':
+          description: Project not found
+          content: {}
+      security:
+        - api_key: []
+  /sequencingrun:
+    get:
+      tags:
+        - Sequencing Runs
+      operationId: getSequencingRuns
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/SequencingRunResourceCollectionResource'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SequencingRunResourceCollectionResource'
+  /sequencingrun/{id}:
+    get:
+      tags:
+        - Sequencing Runs
+      operationId: getSequencingRunById
+      parameters:
+        - name: id
+          in: path
+          description: ''
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/SequencingRunResource'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SequencingRunResource'
+  /sequencingrun/miseq:
+    post:
+      tags:
+        - Sequencing Runs
+      operationId: postSequencingRunMiseq
+      responses:
+        '200':
+          description: successful operation
+  /samples:
+    get:
+      tags:
+        - Samples
+      operationId: getSamples
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/SampleResourceCollectionResource'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SampleResourceCollectionResource'
+  /samples/{id}:
+    get:
+      tags:
+        - Samples
+      operationId: getSampleById
+      parameters:
+        - name: id
+          in: path
+          description: ''
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/SampleResource'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SampleResource'
+  /samples/{id}/metadata:
+    get:
+      tags:
+        - Samples
+      operationId: getSampleByIdMetadata
+      parameters:
+        - name: id
+          in: path
+          description: ''
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: successful operation
+  /analysisSubmissions:
+    get:
+      tags:
+        - Analysis Submissions
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/AnalysisSubmissionResourceCollectionResource'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AnalysisSubmissionResourceCollectionResource'
+  /analysisSubmissions/{id}:
+    get:
+      tags:
+        - Analysis Submissions
+      parameters:
+        - name: id
+          in: path
+          description: ''
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/AnalysisSubmissionResource'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AnalysisSubmissionResource'
+  /analysisSubmissions/analysisType/phylogenomics:
+    get:
+      tags:
+        - Analysis Submissions
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/'
+  /analysisSubmissions/analysisType/assembly:
+    get:
+      tags:
+        - Analysis Submissions
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/'
+  /analysisSubmissions/analysisType/sistr:
+    get:
+      tags:
+        - Analysis Submissions
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/'
+  /analysisSubmissions/analysisType/assembly-collection:
+    get:
+      tags:
+        - Analysis Submissions
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/'
+  /users:
+    get:
+      tags:
+        - Users
+      operationId: getUsers
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/ProjectResourceCollectionResource'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProjectResourceCollectionResource'
+  /users/{id}:
+    get:
+      tags:
+        - Users
+      operationId: getUserById
+      parameters:
+        - name: id
+          in: path
+          description: ''
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/UserResource'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserResource'
+components:
+  schemas:
+    Resource:
+      required:
+        - resource
+      properties:
+        resource:
+          type: object
+    ResourceCollection:
+      required:
+        - resources
+      properties:
+        resources:
+          type: array
+    Link:
+      required:
+        - rel
+        - href
+      properties:
+        rel:
+          type: string
+        href:
+          type: string
+    LinkCollection:
+      required:
+        - links
+      properties:
+        links:
+          type: array
+          items: 
+            $ref: '#/components/schemas/Link'
+    RootResource:
+      required:
+        - resource
+      properties:
+        resource:
+          $ref: '#/components/schemas/LinkCollection'
+    ProjectResourceCollectionResource:
+      required:
+        - resources
+      properties:
+        resource:
+          $ref: '#/components/schemas/ProjectResourceCollection'
+    ProjectResourceCollection:
+      required:
+        - resources
+      properties:
+        resources:
+          type: array
+          items:
+            $ref: '#/components/schemas/Project'
+    ProjectResource:
+      required:
+        - resource
+      properties:
+        resource:
+          $ref: '#/components/schemas/Project'
+    Project:
+      required:
+        - name
+        - createdDate
+        - modifiedDate
+        - assembleUploads
+        - label
+      properties:
+        name:
+          type: string
+        createdDate:
+          type: integer
+        modifiedDate:
+          type: integer
+        assembleUploads:
+          type: boolean
+        label:
+          type: string
+        links:
+          type: array
+          items:
+            $ref: '#/components/schemas/Link'
+        identifier:
+          type: integer
+    SequencingRunResourceCollectionResource:
+      required:
+        - resources
+      properties:
+        resource:
+          $ref: '#/components/schemas/SequencingRunResourceCollection'
+    SequencingRunResourceCollection:
+      required:
+        - resources
+      properties:
+        resources:
+          type: array
+          items:
+            $ref: '#/components/schemas/SequencingRun'
+    SequencingRunResource:
+      required:
+        - resource
+      properties:
+        resource:
+          $ref: '#/components/schemas/SequencingRun'
+    SequencingRun:
+      required:
+        - identifier
+        - projectName
+        - workflow
+        - experimentName
+        - application
+        - assay
+        - chemistry
+        - readLengths
+        - investigatorName
+        - description
+        - uploadStatus
+        - layoutType
+        - createdDate
+        - links
+      properties:
+        identifier:
+          type: integer
+        projectName:
+          type: string
+        workflow:
+          type: string
+        application:
+          type: string
+        assay:
+          type: string
+        chemistry:
+          type: string
+        readLengths:
+          type: integer
+        investigatorName:
+          type: string
+        description:
+          type: string
+        uploadStatus:
+          type: string
+        layoutType:
+          type: string
+        createdDate:
+          type: integer
+        links:
+          type: array
+          items:
+            $ref: '#/components/schemas/Link'
+    SampleResourceCollectionResource:
+      required:
+        - resources
+      properties:
+        resource:
+          $ref: '#/components/schemas/SampleResourceCollection'
+    SampleResourceCollection:
+      required:
+        - resources
+      properties:
+        resources:
+          type: array
+          items:
+            $ref: '#/components/schemas/Sample'
+    SampleResource:
+      required:
+        - resource
+      properties:
+        resource:
+          $ref: '#/components/schemas/Sample'
+    Sample:
+      required:
+        - identifier
+        - createdDate
+        - modifiedDate
+        - sampleName
+        - description
+        - organism
+        - isolate
+        - strain
+        - collectedBy
+        - collectionDate
+        - geographicLocationName
+        - isolationSource
+        - latitude
+        - longitude
+        - label
+        - links
+      properties:
+        identifier:
+          type: integer
+        createdDate:
+          type: integer
+        modifiedDate:
+          type: integer
+        sampleName:
+          type: string
+        description:
+          type: string
+        organism:
+          type: string
+        isolate:
+          type: string
+        strain:
+          type: string
+        collectedBy:
+          type: string
+        collectionDate:
+          type: integer
+        geographicLocationName:
+          type: string
+        isolationSource:
+          type: string
+        latitude:
+          type: number
+        longitude:
+          type: number
+        label:
+          type: string
+        links:
+          type: array
+          items:
+            $ref: '#/components/schemas/Link'
+    UserResourceCollectionResource:
+      required:
+        - resources
+      properties:
+        resource:
+          $ref: '#/components/schemas/UserResourceCollection'
+    UserResourceCollection:
+      required:
+        - resources
+      properties:
+        resources:
+          type: array
+          items:
+            $ref: '#/components/schemas/User'
+    UserResource:
+      required:
+        - resource
+      properties:
+        resource:
+          $ref: '#/components/schemas/User'
+    User:
+      required:
+        - username
+        - email
+        - firstName
+        - lastName
+        - phoneNumber
+        - identifier
+        - createdDate
+        - links
+      properties:
+        username:
+          type: string
+        email:
+          type: string
+        firstName:
+          type: string
+        lastName:
+          type: string
+        phoneNumber:
+          type: string
+        identifier:
+          type: integer
+        createdDate:
+          type: integer
+        links:
+          type: array
+          items:
+            $ref: '#/components/schemas/Link'
+    AnalysisSubmissionResourceCollectionResource:
+      required:
+        - resources
+      properties:
+        resource:
+          $ref: '#/components/schemas/AnalysisSubmissionResourceCollection'
+    AnalysisSubmissionResourceCollection:
+      required:
+        - resources
+      properties:
+        resources:
+          type: array
+          items:
+            $ref: '#/components/schemas/AnalysisSubmission'
+    AnalysisSubmissionResource:
+      required:
+        - resource
+      properties:
+        resource:
+          $ref: '#/components/schemas/AnalysisSubmission'
+    AnalysisSubmission:
+      required:
+        - identifier
+        - createdDate
+        - analysisCleanedState
+        - analysisState
+        - modifiedDate
+        - inputParameters
+        - label
+        - name
+        - remoteFilesPaired
+        - remoteFilesSingle
+        - remoteInputDataId
+        - remoteWorkflowId
+        - workflowId
+        - links
+      properties:
+        identifier:
+          type: integer
+        createdDate:
+          type: integer
+        modifiedDate:
+          type: integer
+        analysisCleanedState:
+          type: string
+        analysisState:
+          type: string
+        inputParameters:
+          type: object
+        label:
+          type: string
+        name:
+          type: string
+        remoteFilesPaired:
+          type: array
+        remoteFilesSingle:
+          type: array
+        remoteInputDataId:
+          type: string
+        remoteWorkflowId:
+          type: string
+        workflowId:
+          type: string
+        links:
+          type: array
+          items:
+            $ref: '#/components/schemas/Link'
+  securitySchemes:
+    irida_auth:
+      type: oauth2
+      flows:
+        password:
+          tokenUrl: 'http://localhost:8080/api/oauth/token'
+          scopes:
+            read: read data
+            write: write data
+    api_key:
+      type: apiKey
+      name: api_key
+      in: header

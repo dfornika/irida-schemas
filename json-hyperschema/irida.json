@@ -1,0 +1,32 @@
+{
+    "$id": "http://localhost:8080/api/users",
+    "$schema": "http://json-schema.org/draft-07/hyper-schema#",
+    "base": "http://localhost:8080/api/",
+    "type": "object",
+    "required": ["elements"],
+    "properties": {
+        "elements": {
+            "type": "array",
+            "items": {
+                "allOf": [{"$ref": "thing#"}],
+                "links": [
+                    {
+                        "anchorPointer": "",
+                        "rel": "item",
+                        "href": "things/{id}",
+                        "templateRequired": ["id"],
+                        "targetSchema": {"$ref": "thing#"}
+                    }
+                ]
+            }
+        }
+    },
+    "links": [
+        {
+            "rel": "self",
+            "href": "things",
+            "targetSchema": {"$ref": "#"},
+            "submissionSchema": {"$ref": "thing"}
+        }
+    ]
+}

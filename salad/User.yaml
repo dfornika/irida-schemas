@@ -1,0 +1,65 @@
+saladVersion: v1.1
+$base: "https://localhost:8080/api/"
+
+$namespaces:
+  obo: "http://purl.obolibrary.org/obo/"
+
+$graph:
+
+- name: UserDoc
+  type: documentation
+  doc:
+    - |
+      # IRIDA User Description, vXXX
+      This version:
+        * https://example.org/irida/vXXX/
+
+- name: User
+  type: record
+  doc: |
+    Details of an IRIDA user.
+  fields:
+    - name: username
+      type: string
+      jsonldPredicate: "obo:NCIT_C42694"
+      doc: The user\'s username
+    - name: email
+      type: string
+      jsonldPredicate: "obo:IAO_0000429"
+      doc: The user\'s email address
+    - name: firstName
+      type: string
+      jsonldPredicate:
+      doc:
+    - name: lastName
+      type: string
+      jsonldPredicate:
+      doc:
+    - name: phoneNumber
+      type: string
+      jsonldPredicate:
+      doc:
+    - name: enabled
+      type: boolean
+      jsonldPredicate:
+      doc:
+    - name: systemRole
+      type: string
+      jsonldPredicate:
+      doc:
+    - name: createdDate
+      type: integer
+      jsonldPredicate:
+      doc:
+    - name: modifiedDate
+      type: integer
+      jsonldPredicate:
+      doc:
+    - name: locale
+      type: string
+      jsonldPredicate:
+      doc:
+    - name: label
+      type: string
+      jsonldPredicate:
+      doc:
