@@ -2,7 +2,7 @@ openapi: 3.0.1
 info:
   title: IRIDA API
   description: ''
-  termsOfService: 'http://swagger.io/terms/'
+  termsOfService: ''
   contact:
     email: contact@irida.ca
   license:
@@ -10,8 +10,8 @@ info:
     url: 'http://www.apache.org/licenses/LICENSE-2.0.html'
   version: 1.0.0
 externalDocs:
-  description: Find out more about Swagger
-  url: 'http://swagger.io'
+  description: IRIDA Documentation
+  url: 'https://irida.corefacility.ca/documentation/'
 servers:
   - url: 'http://localhost:8080/api'
     description: Local Development
@@ -35,7 +35,8 @@ tags:
     description: Details about Sequencing Runs
     externalDocs:
       description: Docs
-      url: 'https://irida.corefacility.ca/documentation/developer/rest/#sequencing-runs'
+      url: >-
+        https://irida.corefacility.ca/documentation/developer/rest/#sequencing-runs
   - name: Samples
     description: Details about Samples
     externalDocs:
@@ -45,7 +46,8 @@ tags:
     description: Details about Analysis Submissions
     externalDocs:
       description: Docs
-      url: 'https://irida.corefacility.ca/documentation/developer/rest/#analysis-submissions'
+      url: >-
+        https://irida.corefacility.ca/documentation/developer/rest/#analysis-submissions
 paths:
   /:
     get:
@@ -58,14 +60,14 @@ paths:
           headers:
             Link:
               schema:
-                $ref: '#/components/schemas/LinkHeaderRfc5899'
-              description: "Links"
+                $ref: '#/components/schemas/LinkHeaderRfc8288'
+              description: Links
           content:
             application/xml:
               schema:
                 type: object
             application/json:
-              schema: 
+              schema:
                 type: object
           links:
             self:
@@ -89,8 +91,8 @@ paths:
           headers:
             Link:
               schema:
-                $ref: '#/components/schemas/LinkHeaderRfc5899'
-              description: "Links"
+                $ref: '#/components/schemas/LinkHeaderRfc8288'
+              description: Links
           content:
             application/xml:
               schema:
@@ -122,8 +124,8 @@ paths:
           headers:
             Link:
               schema:
-                $ref: '#/components/schemas/LinkHeaderRfc5899'
-              description: "Links"
+                $ref: '#/components/schemas/LinkHeaderRfc8288'
+              description: Links
           content:
             application/xml:
               schema:
@@ -148,6 +150,61 @@ paths:
           content: {}
       security:
         - api_key: []
+  /projects/{id}/samples:
+    get:
+      tags:
+        - Projects
+      summary: Get samples by project id
+      description: ''
+      operationId: getSamplesByProject
+      parameters:
+        - name: id
+          in: path
+          description: ''
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: successful operation
+          headers:
+            Link:
+              schema:
+                $ref: '#/components/schemas/LinkHeaderRfc8288'
+              description: Links
+          content:
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/SampleCollection'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SampleCollection'
+    post:
+      tags:
+        - Projects
+      summary: Add samples to project
+      parameters:
+        - name: id
+          in: path
+          description: Project Id
+          required: true
+          schema:
+            type: integer
+            format: int64
+      requestBody:
+        description: Optional description in *Markdown*
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/User'
+          application/xml:
+            schema:
+              $ref: '#/components/schemas/User'
+      responses:
+        '201':
+          description: Created
   /sequencingRuns:
     get:
       tags:
@@ -159,8 +216,8 @@ paths:
           headers:
             Link:
               schema:
-                $ref: '#/components/schemas/LinkHeaderRfc5899'
-              description: "Links"
+                $ref: '#/components/schemas/LinkHeaderRfc8288'
+              description: Links
           content:
             application/xml:
               schema:
@@ -187,8 +244,8 @@ paths:
           headers:
             Link:
               schema:
-                $ref: '#/components/schemas/LinkHeaderRfc5899'
-              description: "Links"
+                $ref: '#/components/schemas/LinkHeaderRfc8288'
+              description: Links
           content:
             application/xml:
               schema:
@@ -215,8 +272,8 @@ paths:
           headers:
             Link:
               schema:
-                $ref: '#/components/schemas/LinkHeaderRfc5899'
-              description: "Links"
+                $ref: '#/components/schemas/LinkHeaderRfc8288'
+              description: Links
           content:
             application/xml:
               schema:
@@ -224,7 +281,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/SampleCollection'
-  '/samples/{id}':
+  /samples/{id}:
     get:
       tags:
         - Samples
@@ -243,8 +300,8 @@ paths:
           headers:
             Link:
               schema:
-                $ref: '#/components/schemas/LinkHeaderRfc5899'
-              description: "Links"
+                $ref: '#/components/schemas/LinkHeaderRfc8288'
+              description: Links
           content:
             application/xml:
               schema:
@@ -271,8 +328,8 @@ paths:
           headers:
             Link:
               schema:
-                $ref: '#/components/schemas/LinkHeaderRfc5899'
-              description: "Links"
+                $ref: '#/components/schemas/LinkHeaderRfc8288'
+              description: Links
           content:
             application/xml:
               schema:
@@ -291,8 +348,8 @@ paths:
           headers:
             Link:
               schema:
-                $ref: '#/components/schemas/LinkHeaderRfc5899'
-              description: "Links"
+                $ref: '#/components/schemas/LinkHeaderRfc8288'
+              description: Links
           content:
             application/xml:
               schema:
@@ -319,8 +376,8 @@ paths:
           headers:
             Link:
               schema:
-                $ref: '#/components/schemas/LinkHeaderRfc5899'
-              description: "Links"
+                $ref: '#/components/schemas/LinkHeaderRfc8288'
+              description: Links
           content:
             application/xml:
               schema:
@@ -346,15 +403,8 @@ paths:
           headers:
             Link:
               schema:
-                $ref: '#/components/schemas/LinkHeaderRfc5899'
-              description: "Links"
-          content:
-            application/xml:
-              schema:
-                $ref: '#/components/schemas/'
-            application/json:
-              schema:
-                $ref: '#/components/schemas/'
+                $ref: '#/components/schemas/LinkHeaderRfc8288'
+              description: Links
   /users:
     get:
       tags:
@@ -366,8 +416,8 @@ paths:
           headers:
             Link:
               schema:
-                $ref: '#/components/schemas/LinkHeaderRfc5899'
-              description: "Links"
+                $ref: '#/components/schemas/LinkHeaderRfc8288'
+              description: Links
           content:
             application/xml:
               schema:
@@ -375,7 +425,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ProjectCollection'
-  /users/{id}:
+  '/users/{id}':
     get:
       tags:
         - Users
@@ -394,8 +444,8 @@ paths:
           headers:
             Link:
               schema:
-                $ref: '#/components/schemas/LinkHeaderRfc5899'
-              description: "Links"
+                $ref: '#/components/schemas/LinkHeaderRfc8288'
+              description: Links
           content:
             application/xml:
               schema:
@@ -403,12 +453,39 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/User'
+  '/users/{username}/projects':
+    get:
+      tags:
+        - Users
+      operationId: getProjectsByUsername
+      parameters:
+        - name: username
+          in: path
+          description: ''
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: successful operation
+          headers:
+            Link:
+              schema:
+                $ref: '#/components/schemas/LinkHeaderRfc8288'
+              description: Links
+          content:
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/ProjectCollection'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProjectCollection'
 components:
   schemas:
-    LinkHeaderRfc5899:
+    LinkHeaderRfc8288:
       type: string
-      pattern: '^<(.*)>; rel=(.*)$'
-      description: "rfc5899 Link header"
+      pattern: ^<(.*)>; rel=\"(.*)\"$
+      description: rfc8288 Link header
     ProjectCollection:
       type: array
       items:
