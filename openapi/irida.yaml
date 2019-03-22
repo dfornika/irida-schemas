@@ -16,32 +16,68 @@ servers:
   - url: 'http://localhost:8080/api'
     description: Local Development
 tags:
+  - name: ApiRoot
+    description: API Root
+    externalDocs:
+      description: Docs
+      url: 'https://irida.corefacility.ca/documentation/developer/rest'
   - name: Users
     description: Details about users
     externalDocs:
-      description: 'Docs'
+      description: Docs
       url: 'https://irida.corefacility.ca/documentation/developer/rest/#users'
   - name: Projects
     description: Details about projects
     externalDocs:
-      description: 'Docs'
+      description: Docs
       url: 'https://irida.corefacility.ca/documentation/developer/rest/#projects'
   - name: Sequencing Runs
     description: Details about Sequencing Runs
     externalDocs:
-      description: 'Docs'
+      description: Docs
       url: 'https://irida.corefacility.ca/documentation/developer/rest/#sequencing-runs'
   - name: Samples
     description: Details about Samples
     externalDocs:
-      description: 'Docs'
+      description: Docs
       url: 'https://irida.corefacility.ca/documentation/developer/rest/#samples'
   - name: Analysis Submissions
     description: Details about Analysis Submissions
     externalDocs:
-      description: 'Docs'
+      description: Docs
       url: 'https://irida.corefacility.ca/documentation/developer/rest/#analysis-submissions'
 paths:
+  /:
+    get:
+      tags:
+        - ApiRoot
+      operationId: getApiRoot
+      responses:
+        '200':
+          description: successful operation
+          headers:
+            Link:
+              schema:
+                $ref: '#/components/schemas/LinkHeaderRfc5899'
+              description: "Links"
+          content:
+            application/xml:
+              schema:
+                type: object
+            application/json:
+              schema: 
+                type: object
+          links:
+            self:
+              operationId: getApiRoot
+            projects:
+              operationId: getProjects
+            sequencingRuns:
+              operationId: getSequencingRuns
+            analysisSubmissions:
+              operationId: getAnalysisSubmissions
+            users:
+              operationId: getUsers
   /projects:
     get:
       tags:
@@ -50,13 +86,21 @@ paths:
       responses:
         '200':
           description: successful operation
+          headers:
+            Link:
+              schema:
+                $ref: '#/components/schemas/LinkHeaderRfc5899'
+              description: "Links"
           content:
             application/xml:
               schema:
-                $ref: '#/components/schemas/ProjectResourceCollectionResource'
+                $ref: '#/components/schemas/ProjectCollection'
             application/json:
               schema:
-                $ref: '#/components/schemas/ProjectResourceCollectionResource'
+                $ref: '#/components/schemas/ProjectCollection'
+          links:
+            self:
+              operationId: getProjects
   /projects/{id}:
     get:
       tags:
@@ -75,13 +119,27 @@ paths:
       responses:
         '200':
           description: successful operation
+          headers:
+            Link:
+              schema:
+                $ref: '#/components/schemas/LinkHeaderRfc5899'
+              description: "Links"
           content:
             application/xml:
               schema:
-                $ref: '#/components/schemas/ProjectResource'
+                $ref: '#/components/schemas/Project'
             application/json:
               schema:
-                $ref: '#/components/schemas/ProjectResource'
+                $ref: '#/components/schemas/Project'
+          links:
+            self:
+              operationId: getProjectById
+            analyses:
+              operationId: getAnalysesByProject
+            users:
+              operationId: getUsersByProject
+            samples:
+              operationId: getSamplesByProject
         '400':
           description: Invalid ID supplied
           content: {}
@@ -90,7 +148,7 @@ paths:
           content: {}
       security:
         - api_key: []
-  /sequencingrun:
+  /sequencingRuns:
     get:
       tags:
         - Sequencing Runs
@@ -98,14 +156,19 @@ paths:
       responses:
         '200':
           description: successful operation
+          headers:
+            Link:
+              schema:
+                $ref: '#/components/schemas/LinkHeaderRfc5899'
+              description: "Links"
           content:
             application/xml:
               schema:
-                $ref: '#/components/schemas/SequencingRunResourceCollectionResource'
+                $ref: '#/components/schemas/SequencingRunCollection'
             application/json:
               schema:
-                $ref: '#/components/schemas/SequencingRunResourceCollectionResource'
-  /sequencingrun/{id}:
+                $ref: '#/components/schemas/SequencingRunCollection'
+  /sequencingRuns/{id}:
     get:
       tags:
         - Sequencing Runs
@@ -121,14 +184,19 @@ paths:
       responses:
         '200':
           description: successful operation
+          headers:
+            Link:
+              schema:
+                $ref: '#/components/schemas/LinkHeaderRfc5899'
+              description: "Links"
           content:
             application/xml:
               schema:
-                $ref: '#/components/schemas/SequencingRunResource'
+                $ref: '#/components/schemas/SequencingRun'
             application/json:
               schema:
-                $ref: '#/components/schemas/SequencingRunResource'
-  /sequencingrun/miseq:
+                $ref: '#/components/schemas/SequencingRun'
+  /sequencingRuns/miseq:
     post:
       tags:
         - Sequencing Runs
@@ -144,14 +212,19 @@ paths:
       responses:
         '200':
           description: successful operation
+          headers:
+            Link:
+              schema:
+                $ref: '#/components/schemas/LinkHeaderRfc5899'
+              description: "Links"
           content:
             application/xml:
               schema:
-                $ref: '#/components/schemas/SampleResourceCollectionResource'
+                $ref: '#/components/schemas/SampleCollection'
             application/json:
               schema:
-                $ref: '#/components/schemas/SampleResourceCollectionResource'
-  /samples/{id}:
+                $ref: '#/components/schemas/SampleCollection'
+  '/samples/{id}':
     get:
       tags:
         - Samples
@@ -167,18 +240,23 @@ paths:
       responses:
         '200':
           description: successful operation
+          headers:
+            Link:
+              schema:
+                $ref: '#/components/schemas/LinkHeaderRfc5899'
+              description: "Links"
           content:
             application/xml:
               schema:
-                $ref: '#/components/schemas/SampleResource'
+                $ref: '#/components/schemas/Sample'
             application/json:
               schema:
-                $ref: '#/components/schemas/SampleResource'
+                $ref: '#/components/schemas/Sample'
   /samples/{id}/metadata:
     get:
       tags:
         - Samples
-      operationId: getSampleByIdMetadata
+      operationId: getSampleMetadataBySampleId
       parameters:
         - name: id
           in: path
@@ -190,24 +268,43 @@ paths:
       responses:
         '200':
           description: successful operation
+          headers:
+            Link:
+              schema:
+                $ref: '#/components/schemas/LinkHeaderRfc5899'
+              description: "Links"
+          content:
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/SampleMetadata'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SampleMetadata'
   /analysisSubmissions:
     get:
       tags:
         - Analysis Submissions
+      operationId: getAnalysisSubmissions
       responses:
         '200':
           description: successful operation
+          headers:
+            Link:
+              schema:
+                $ref: '#/components/schemas/LinkHeaderRfc5899'
+              description: "Links"
           content:
             application/xml:
               schema:
-                $ref: '#/components/schemas/AnalysisSubmissionResourceCollectionResource'
+                $ref: '#/components/schemas/AnalysisSubmissionCollection'
             application/json:
               schema:
-                $ref: '#/components/schemas/AnalysisSubmissionResourceCollectionResource'
+                $ref: '#/components/schemas/AnalysisSubmissionCollection'
   /analysisSubmissions/{id}:
     get:
       tags:
         - Analysis Submissions
+      operationId: getAnalysisSubmissionById
       parameters:
         - name: id
           in: path
@@ -219,62 +316,38 @@ paths:
       responses:
         '200':
           description: successful operation
+          headers:
+            Link:
+              schema:
+                $ref: '#/components/schemas/LinkHeaderRfc5899'
+              description: "Links"
           content:
             application/xml:
               schema:
-                $ref: '#/components/schemas/AnalysisSubmissionResource'
+                $ref: '#/components/schemas/AnalysisSubmission'
             application/json:
               schema:
-                $ref: '#/components/schemas/AnalysisSubmissionResource'
-  /analysisSubmissions/analysisType/phylogenomics:
+                $ref: '#/components/schemas/AnalysisSubmission'
+  /analysisSubmissions/analysisType/{analysisType}:
     get:
       tags:
         - Analysis Submissions
+      operationId: getAnalysisSubmissionsByAnalysisType
+      parameters:
+        - name: analysisType
+          in: path
+          description: ''
+          required: true
+          schema:
+            type: string
       responses:
         '200':
           description: successful operation
-          content:
-            application/xml:
+          headers:
+            Link:
               schema:
-                $ref: '#/components/schemas/'
-            application/json:
-              schema:
-                $ref: '#/components/schemas/'
-  /analysisSubmissions/analysisType/assembly:
-    get:
-      tags:
-        - Analysis Submissions
-      responses:
-        '200':
-          description: successful operation
-          content:
-            application/xml:
-              schema:
-                $ref: '#/components/schemas/'
-            application/json:
-              schema:
-                $ref: '#/components/schemas/'
-  /analysisSubmissions/analysisType/sistr:
-    get:
-      tags:
-        - Analysis Submissions
-      responses:
-        '200':
-          description: successful operation
-          content:
-            application/xml:
-              schema:
-                $ref: '#/components/schemas/'
-            application/json:
-              schema:
-                $ref: '#/components/schemas/'
-  /analysisSubmissions/analysisType/assembly-collection:
-    get:
-      tags:
-        - Analysis Submissions
-      responses:
-        '200':
-          description: successful operation
+                $ref: '#/components/schemas/LinkHeaderRfc5899'
+              description: "Links"
           content:
             application/xml:
               schema:
@@ -290,13 +363,18 @@ paths:
       responses:
         '200':
           description: successful operation
+          headers:
+            Link:
+              schema:
+                $ref: '#/components/schemas/LinkHeaderRfc5899'
+              description: "Links"
           content:
             application/xml:
               schema:
-                $ref: '#/components/schemas/ProjectResourceCollectionResource'
+                $ref: '#/components/schemas/ProjectCollection'
             application/json:
               schema:
-                $ref: '#/components/schemas/ProjectResourceCollectionResource'
+                $ref: '#/components/schemas/ProjectCollection'
   /users/{id}:
     get:
       tags:
@@ -313,70 +391,28 @@ paths:
       responses:
         '200':
           description: successful operation
+          headers:
+            Link:
+              schema:
+                $ref: '#/components/schemas/LinkHeaderRfc5899'
+              description: "Links"
           content:
             application/xml:
               schema:
-                $ref: '#/components/schemas/UserResource'
+                $ref: '#/components/schemas/User'
             application/json:
               schema:
-                $ref: '#/components/schemas/UserResource'
+                $ref: '#/components/schemas/User'
 components:
   schemas:
-    Resource:
-      required:
-        - resource
-      properties:
-        resource:
-          type: object
-    ResourceCollection:
-      required:
-        - resources
-      properties:
-        resources:
-          type: array
-    Link:
-      required:
-        - rel
-        - href
-      properties:
-        rel:
-          type: string
-        href:
-          type: string
-    LinkCollection:
-      required:
-        - links
-      properties:
-        links:
-          type: array
-          items: 
-            $ref: '#/components/schemas/Link'
-    RootResource:
-      required:
-        - resource
-      properties:
-        resource:
-          $ref: '#/components/schemas/LinkCollection'
-    ProjectResourceCollectionResource:
-      required:
-        - resources
-      properties:
-        resource:
-          $ref: '#/components/schemas/ProjectResourceCollection'
-    ProjectResourceCollection:
-      required:
-        - resources
-      properties:
-        resources:
-          type: array
-          items:
-            $ref: '#/components/schemas/Project'
-    ProjectResource:
-      required:
-        - resource
-      properties:
-        resource:
-          $ref: '#/components/schemas/Project'
+    LinkHeaderRfc5899:
+      type: string
+      pattern: '^<(.*)>; rel=(.*)$'
+      description: "rfc5899 Link header"
+    ProjectCollection:
+      type: array
+      items:
+        $ref: '#/components/schemas/Project'
     Project:
       required:
         - name
@@ -385,42 +421,22 @@ components:
         - assembleUploads
         - label
       properties:
-        name:
-          type: string
+        identifier:
+          type: integer
         createdDate:
           type: integer
         modifiedDate:
           type: integer
+        name:
+          type: string
         assembleUploads:
           type: boolean
         label:
           type: string
-        links:
-          type: array
-          items:
-            $ref: '#/components/schemas/Link'
-        identifier:
-          type: integer
-    SequencingRunResourceCollectionResource:
-      required:
-        - resources
-      properties:
-        resource:
-          $ref: '#/components/schemas/SequencingRunResourceCollection'
-    SequencingRunResourceCollection:
-      required:
-        - resources
-      properties:
-        resources:
-          type: array
-          items:
-            $ref: '#/components/schemas/SequencingRun'
-    SequencingRunResource:
-      required:
-        - resource
-      properties:
-        resource:
-          $ref: '#/components/schemas/SequencingRun'
+    SequencingRunCollection:
+      type: array
+      items:
+        $ref: '#/components/schemas/SequencingRun'
     SequencingRun:
       required:
         - identifier
@@ -436,7 +452,6 @@ components:
         - uploadStatus
         - layoutType
         - createdDate
-        - links
       properties:
         identifier:
           type: integer
@@ -462,30 +477,10 @@ components:
           type: string
         createdDate:
           type: integer
-        links:
-          type: array
-          items:
-            $ref: '#/components/schemas/Link'
-    SampleResourceCollectionResource:
-      required:
-        - resources
-      properties:
-        resource:
-          $ref: '#/components/schemas/SampleResourceCollection'
-    SampleResourceCollection:
-      required:
-        - resources
-      properties:
-        resources:
-          type: array
-          items:
-            $ref: '#/components/schemas/Sample'
-    SampleResource:
-      required:
-        - resource
-      properties:
-        resource:
-          $ref: '#/components/schemas/Sample'
+    SampleCollection:
+      type: array
+      items:
+        $ref: '#/components/schemas/Sample'
     Sample:
       required:
         - identifier
@@ -503,7 +498,6 @@ components:
         - latitude
         - longitude
         - label
-        - links
       properties:
         identifier:
           type: integer
@@ -535,30 +529,12 @@ components:
           type: number
         label:
           type: string
-        links:
-          type: array
-          items:
-            $ref: '#/components/schemas/Link'
-    UserResourceCollectionResource:
-      required:
-        - resources
-      properties:
-        resource:
-          $ref: '#/components/schemas/UserResourceCollection'
-    UserResourceCollection:
-      required:
-        - resources
-      properties:
-        resources:
-          type: array
-          items:
-            $ref: '#/components/schemas/User'
-    UserResource:
-      required:
-        - resource
-      properties:
-        resource:
-          $ref: '#/components/schemas/User'
+    SampleMetadata:
+      type: object
+    UserCollection:
+      type: array
+      items:
+        $ref: '#/components/schemas/User'
     User:
       required:
         - username
@@ -568,7 +544,6 @@ components:
         - phoneNumber
         - identifier
         - createdDate
-        - links
       properties:
         username:
           type: string
@@ -584,30 +559,10 @@ components:
           type: integer
         createdDate:
           type: integer
-        links:
-          type: array
-          items:
-            $ref: '#/components/schemas/Link'
-    AnalysisSubmissionResourceCollectionResource:
-      required:
-        - resources
-      properties:
-        resource:
-          $ref: '#/components/schemas/AnalysisSubmissionResourceCollection'
-    AnalysisSubmissionResourceCollection:
-      required:
-        - resources
-      properties:
-        resources:
-          type: array
-          items:
-            $ref: '#/components/schemas/AnalysisSubmission'
-    AnalysisSubmissionResource:
-      required:
-        - resource
-      properties:
-        resource:
-          $ref: '#/components/schemas/AnalysisSubmission'
+    AnalysisSubmissionCollection:
+      type: array
+      items:
+        $ref: '#/components/schemas/AnalysisSubmission'
     AnalysisSubmission:
       required:
         - identifier
@@ -623,7 +578,6 @@ components:
         - remoteInputDataId
         - remoteWorkflowId
         - workflowId
-        - links
       properties:
         identifier:
           type: integer
@@ -651,10 +605,6 @@ components:
           type: string
         workflowId:
           type: string
-        links:
-          type: array
-          items:
-            $ref: '#/components/schemas/Link'
   securitySchemes:
     irida_auth:
       type: oauth2
